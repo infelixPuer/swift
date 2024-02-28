@@ -1,0 +1,388 @@
+// 1
+var first_var: Int = 10;
+var second_var = 5;
+var result: Int = first_var + second_var;
+print(result);
+
+// 2
+let pi: Float = 3.14;
+result += Int(pi);
+print(result);
+
+// 3
+let first_const = 3;
+let second_const = 4;
+let third_const = 5;
+
+// 4
+if (first_const > second_const && first_const > third_const) {
+    print("Max: first_const");
+}
+if (second_const > first_const && second_const > third_const) {
+    print("Max: second_const");
+}
+if (third_const > second_const && third_const > first_const) {
+    print("Max: third_const");
+}
+
+if (first_const < second_const && first_const < third_const) {
+    print("Min: first_const");
+}
+if (second_const < first_const && second_const < third_const) {
+    print("Min: second_const");
+}
+if (third_const < second_const && third_const < first_const) {
+    print("Min: third_const");
+}
+
+// 5
+var first_test: Int = -50;
+var second_test: Int = 100;
+
+switch second_test {
+    case -100..<1:
+        print("Number is greater than -100 and less than 0");
+    case 0..<101:
+        print("Number is greater than 0 and less than 100");
+    case 101:
+        print("Number is equal to 101");
+    case 102..<1001:
+        print("Number is greater than 100 and less than 1000");
+    default:
+        print("Number is either less than -100 or greater than 1000");
+}
+
+// 6
+var multiline_str: String = """
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+    labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+    laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+    voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+    non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+""";
+
+print("Length of a string: \(multiline_str) is \(multiline_str.count)");
+
+// 7
+var temp_array: [Float] = [20.5, 25.0, 23.3, 24.7, 26.8, 25.6, 26.8];
+var avr: Float = 0.0;
+
+for temp in temp_array {
+    avr += temp;
+}
+avr /= 7;
+print("Average temperature: \(avr)");
+
+// 8
+var last_name_array: [String] = ["Covel", "Hellman", "Bratton", "Bonnet"];
+var last_name_dict: [Int: String] = [:];
+
+for (index, last_name) in last_name_array.enumerated() {
+    last_name_dict[index] = last_name;
+}
+
+for (code, last_name) in last_name_dict {
+    print("Code: \(code), Last name: \(last_name)");
+}
+
+// 9
+func add_matrices(first_matrix: [[Float]], second_matrix: [[Float]]) -> [[Float]] {
+    var result_matrix: [[Float]] = Array(repeating: Array(repeating: 0.0, count: first_matrix[0].count), count: first_matrix.count);
+
+    for x in 0..<result_matrix.count {
+        for y in 0..<result_matrix.count {
+            result_matrix[x][y] = first_matrix[x][y] + second_matrix[x][y];
+        }
+    }
+    
+    return result_matrix;
+}
+
+var first_matrix: [[Float]] = Array(repeating: Array(repeating: 0.0, count: 3), count: 3);
+var second_matrix: [[Float]] = Array(repeating: Array(repeating: 0.0, count: 3), count: 3);
+
+
+for x in 0..<first_matrix.count {
+    for y in 0..<first_matrix[x].count {
+        first_matrix[x][y] = Float.random(in: 0.0...10.0);
+    } 
+}
+
+for x in 0..<second_matrix.count {
+    for y in 0..<second_matrix[x].count {
+        second_matrix[x][y] = Float.random(in: 0.0...10.0);
+    } 
+}
+
+var result_matrix: [[Float]] = add_matrices(first_matrix: first_matrix, second_matrix: second_matrix);
+
+print(first_matrix);
+print(second_matrix);
+print(result_matrix);
+
+// 10
+struct Invoice {
+    var ClientName: String;
+    var InvoiceNumber: Int;
+    var Date: String;
+    var Positions: [String: Float] = [:];
+    
+    init(ClientName: String, InvoiceNumber: Int, Date: String) {
+        self.ClientName = ClientName;
+        self.InvoiceNumber = InvoiceNumber;
+        self.Date = Date;
+    }
+    
+    mutating func add_position(ProductName: String, ProductPrice: Float) {
+        Positions[ProductName] = ProductPrice;
+    }
+}
+
+var invoice: Invoice = Invoice(ClientName: "TestName", InvoiceNumber: 0, Date: "01-01-0101");
+invoice.add_position(ProductName: "testProduct1", ProductPrice: 15.5);
+invoice.add_position(ProductName: "testProduct2", ProductPrice: 20.0);
+
+print(invoice);
+
+// 11
+struct Account {
+    var Balance: Float {
+        willSet {
+            print("Balance before transfer: \(self.Balance)");
+        }
+        
+        didSet {
+            print("New balance is equal: \(Balance / oldValue) of old balance");
+            print("Balance after transfer: \(self.Balance)");
+            if (Balance < 0) {
+                print("Debit on account");
+            }
+        }
+    }
+    
+    mutating func transfer(Value: Float) {
+        Balance += Value;
+    }
+    
+    init() {
+        self.Balance = 0.0;
+    }
+}
+
+var account: Account = Account();
+account.transfer(Value: 100.0);
+account.transfer(Value: 150.0);
+account.transfer(Value: -300.0);
+
+// 12
+class Computer {
+    var RAM: Int;
+    var CPU: String;
+    var GPU: String;
+    
+    init(RAM: Int, CPU: String, GPU: String) {
+        self.RAM = RAM;
+        self.CPU = CPU;
+        self.GPU = GPU;
+    }
+    
+    func show_specs() {
+        print("""
+        Computer specs:
+        RAM: \(RAM),
+        CPU: \(CPU),
+        GPU: \(GPU).
+        """)
+    }
+}
+
+var computer: Computer = Computer(RAM: 16, CPU: "Ryzen 5 5600H", GPU: "GeForce 1650");
+
+
+// 13
+class Laptop: Computer {
+    var Battery: Int;
+    
+    init(RAM: Int, CPU: String, GPU: String, Battery: Int) {
+        self.Battery = Battery;
+        super.init(RAM: RAM, CPU: CPU, GPU: GPU);
+    }
+    
+    override func show_specs() {
+        print("""
+        Laptop specs:
+        RAM: \(RAM),
+        CPU: \(CPU),
+        GPU: \(GPU),
+        Battery: \(Battery).
+        """)
+    }
+}
+
+class Tablet: Computer {
+    var Diagonal: Float;
+    
+    init(RAM: Int, CPU: String, GPU: String, Diagonal: Float) {
+        self.Diagonal = Diagonal;
+        super.init(RAM: RAM, CPU: CPU, GPU: GPU);
+    }
+    
+    override func show_specs() {
+        print("""
+        Tablet specs:
+        RAM: \(RAM),
+        CPU: \(CPU),
+        GPU: \(GPU),
+        Diagonal: \(Diagonal).
+        """)
+    }
+}
+
+var laptop: Laptop = Laptop(RAM: 16, CPU: "Ryzen 5 5600H", GPU: "GeForce 1650", Battery: 4600);
+var tablet: Tablet = Tablet(RAM: 16, CPU: "Ryzen 5 5600H", GPU: "GeForce 1650", Diagonal: 11.0);
+
+
+var comp_array: [Computer] = [];
+comp_array.append(computer);
+comp_array.append(laptop);
+comp_array.append(tablet);
+
+for x in 0..<comp_array.count {
+    comp_array[x].show_specs();
+}
+
+// 14
+class Car {
+    static var NumberOfWheels: Int = 4;
+    var Brand: String = "bmw";
+    var Model: String?;
+    var Color: String = "black";
+    var ProductionYear: Int;
+
+    init?(Brand: String, Color: String, ProductionYear: Int) {
+        self.Brand = Brand;
+        self.Color = Color;
+        if (ProductionYear < 1900) {
+            return nil;
+        }
+        self.ProductionYear = ProductionYear;
+    }
+}
+
+var car1: Car? = Car(Brand: "mercedes", Color: "black", ProductionYear: 1999);
+car1?.Model = "model1";
+var car2: Car? = Car(Brand: "bmw", Color: "red", ProductionYear: 2005);
+var car3: Car? = Car(Brand: "volkswagen", Color: "grey", ProductionYear: 1830);
+car3?.Model = "model3";
+
+if let car = car1 {
+    if let model = car.Model {
+        print(model);
+    }
+}
+
+if let car = car2 {
+    if let model = car.Model {
+        print(model);
+    }
+}
+
+if let car = car3 {
+    if let model = car.Model {
+        print(model);
+    }
+}
+
+if let car = car1 {
+    print(car.Model!);
+}
+/*
+if let car = car2 {
+    print(car.Model!);
+}
+if let car = car3 {
+    print(car.Model!);
+}
+*/
+// 15
+enum Education {
+    case Primary, Secondary, Higher;
+}
+
+class CandidateForWork {
+    var Age: Int;
+    var Education: Education;
+    var ExpectedSalary: Float;
+    
+    init(Age: Int, Education: Education, ExpectedSalary: Float) {
+        self.Age = Age;
+        self.Education = Education;
+        self.ExpectedSalary = ExpectedSalary;
+    }
+}
+
+func check_candidate(Candidate: CandidateForWork) {
+    if (Candidate.Age >= 50) {
+        print("Candidate too old!");
+        return;
+    }
+    
+    if (Candidate.Education != Education.Higher) {
+        print("Candidate does not have higher education!");
+        return;
+    }
+    
+    if (Candidate.ExpectedSalary >= 5000.0) {
+        print("Candidate's expected salary is too high!");
+        return;
+    }
+    
+    print("Candidate is ideal!");
+}
+
+func check_candidate_guard(Candidate: CandidateForWork) {
+    guard Candidate.Age < 50 else  {
+        print("Candidate too old!");
+        return;
+    }
+    
+    guard Candidate.Education == Education.Higher else {
+        print("Candidate does not have higher education!");
+        return;
+    }
+    
+    guard Candidate.ExpectedSalary < 5000.0 else {
+        print("Candidate's expected salary is too high!");
+        return;
+    }
+    
+    print("Candidate is ideal!");
+}
+
+var cand1: CandidateForWork = CandidateForWork(Age: 30, Education: Education.Higher, ExpectedSalary: 4500.0);
+var cand2: CandidateForWork = CandidateForWork(Age: 25, Education: Education.Higher, ExpectedSalary: 5600.0);
+var cand3: CandidateForWork = CandidateForWork(Age: 60, Education: Education.Higher, ExpectedSalary: 4900.0);
+var cand4: CandidateForWork = CandidateForWork(Age: 18, Education: Education.Secondary, ExpectedSalary: 2000.0);
+
+check_candidate(Candidate: cand1);
+check_candidate(Candidate: cand2);
+check_candidate(Candidate: cand3);
+check_candidate(Candidate: cand4);
+
+check_candidate_guard(Candidate: cand1);
+check_candidate_guard(Candidate: cand2);
+check_candidate_guard(Candidate: cand3);
+check_candidate_guard(Candidate: cand4);
+
+
+
+
+
+
+
+
+
+
+
+
+
